@@ -1,0 +1,31 @@
+# Kong Gateway — example install values
+# Namespace: apim-gw-kong (Gateway + HTTPRoutes + backends all colocated here)
+# Ports: 8080 (HTTP) / 8443 (HTTPS) — dedicated, does not compete for the
+# shared LB IP used by CP/Universal Gateway. See PORTS.md.
+#
+# helm install kong kong/ingress --version <PIN_ME> \
+#   -f gateways/kong/install-values.yaml -n apim-gw-kong --create-namespace
+
+controller:
+  ingressController:
+    enabled: true
+    gatewayDiscovery:
+      enabled: true
+      generateAdminApiService: true
+
+gateway:
+  enabled: true
+
+proxy:
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 8080
+    containerPort: 8000
+  tls:
+    enabled: true
+    servicePort: 8443
+    containerPort: 8443
+
+# TLS cert reference: use the shared wildcard secret from shared/certs/
+# (see ARCHITECTURE.md section 6) rather than a one-off self-signed cert.

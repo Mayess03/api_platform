@@ -1,0 +1,60 @@
+# WSO2 APIM Control Plane — example values
+# Copy to values.yaml (git-ignored) and fill in real secrets before installing.
+#
+# helm install apim wso2-cp/wso2am-acp --version 4.7.0-1 \
+#   -f control-plane/values.yaml -n apim-cp --create-namespace
+
+kubernetes:
+  gatewayAPI:
+    enabled: true
+    defaultConfigMapCreation: true
+    gateway:
+      enabled: true
+      hostname: gw.wso2.com
+    management:
+      enabled: true
+      hostname: am.wso2.com
+    websocket:
+      enabled: true
+      hostname: websocket.wso2.com
+    websub:
+      enabled: true
+      hostname: websub.wso2.com
+    backendTLSPolicy:
+      enabled: true
+      hostname: localhost
+      caCertificateConfigMap: wso2-ca-cert
+    backendTrafficPolicy:
+      enabled: true
+      cookie:
+        name: WSO2_CP_STICKY_SESSION
+        ttl: 0s
+  ingressClass: nginx
+
+wso2:
+  apim:
+    configurations:
+      databases:
+        type: mysql
+        jdbc:
+          driver: com.mysql.cj.jdbc.Driver
+        apim_db:
+          url: jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/apim_db?useSSL=false
+          username: "CHANGE_ME"
+          password: "CHANGE_ME"
+        shared_db:
+          url: jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/shared_db?useSSL=false
+          username: "CHANGE_ME"
+          password: "CHANGE_ME"
+      encryption:
+        # Generate a fresh 64-char hex key per environment. Never reuse across envs.
+        key: "CHANGE_ME_64_CHAR_HEX"
+      security:
+        truststore:
+          name: client-truststore.jks
+          password: "CHANGE_ME"
+  deployment:
+    image:
+      registry: docker.io
+      repository: "CHANGE_ME/your-wso2am-image"
+      tag: "CHANGE_ME"

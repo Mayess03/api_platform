@@ -1,0 +1,35 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: api-platform
+servers: 1
+agents: 0
+ports:
+  # WSO2 CP + Universal Gateway — shared LB IP, default ports
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+  - port: 443:443
+    nodeFilters:
+      - loadbalancer
+  # Kong — dedicated ports, no LB IP contention
+  - port: 8080:8080
+    nodeFilters:
+      - loadbalancer
+  - port: 8443:8443
+    nodeFilters:
+      - loadbalancer
+  # Envoy — dedicated ports, no LB IP contention
+  - port: 9080:9080
+    nodeFilters:
+      - loadbalancer
+  - port: 9443:9443
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+    timeout: "5m"
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
