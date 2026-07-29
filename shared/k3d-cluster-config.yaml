@@ -27,6 +27,11 @@ ports:
     nodeFilters:
       - loadbalancer
 options:
+  k3s:
+    extraArgs:
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
   k3d:
     wait: true
     timeout: "5m"
