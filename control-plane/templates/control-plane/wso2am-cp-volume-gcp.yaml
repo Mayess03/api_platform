@@ -1,0 +1,112 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# --------------------------------------------------------------------------------------
+
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.gcp.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-local-carbon-database-1
+  labels:
+    purpose: am-carbondb-1
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "apim-helm-cp.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.carbonDB1.fileStoreName }}/{{ .Values.gcp.fs.fileshares.carbonDB1.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.carbonDB1.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.carbonDB1.fileShareName }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-1
+  labels:
+    purpose: am-solr-1
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "apim-helm-cp.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.solr1.fileStoreName }}/{{ .Values.gcp.fs.fileshares.solr1.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.solr1.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.solr1.fileShareName }}
+
+---
+{{ if .Values.wso2.deployment.highAvailability }}
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-local-carbon-database-2
+  labels:
+    purpose: am-carbondb-2
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "apim-helm-cp.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.carbonDB2.fileStoreName }}/{{ .Values.gcp.fs.fileshares.carbonDB2.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.carbonDB2.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.carbonDB2.fileShareName }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-2
+  labels:
+    purpose: am-solr-2
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "apim-helm-cp.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.solr2.fileStoreName }}/{{ .Values.gcp.fs.fileshares.solr2.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.solr2.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.solr2.fileShareName }}
+
+{{- end }}
+{{- end }}

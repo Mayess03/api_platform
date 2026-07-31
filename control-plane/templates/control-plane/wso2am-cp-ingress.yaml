@@ -1,0 +1,56 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# --------------------------------------------------------------------------------------
+
+{{- if .Values.kubernetes.ingress.controlPlane.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-ingress
+  namespace : {{ .Release.Namespace }}
+{{- if .Values.kubernetes.ingress.controlPlane.annotations }}
+  annotations:
+{{ toYaml .Values.kubernetes.ingress.controlPlane.annotations | indent 4 }}
+    {{- if .Values.kubernetes.ingress.ratelimit.enabled }}
+    nginx.ingress.kubernetes.io/configuration-snippet: | 
+      limit_req zone={{ .Values.kubernetes.ingress.ratelimit.zoneName }} burst={{ .Values.kubernetes.ingress.ratelimit.burstLimit }} nodelay;                                                   
+      limit_req_status 429;
+      set $rangeheadervalue $http_range;
+      if ($http_accept_encoding = "gzip") {
+      set $rangeheadervalue "";
+      }
+      proxy_set_header Range $rangeheadervalue;
+    {{- end }}
+{{- end }}
+spec:
+  ingressClassName: {{ .Values.kubernetes.ingressClass }}
+  tls:
+  - hosts:
+    - {{ .Values.kubernetes.ingress.controlPlane.hostname }}
+    secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
+  rules:
+  - host: {{ .Values.kubernetes.ingress.controlPlane.hostname }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: {{ template "apim-helm-cp.fullname" . }}-service
+            port: 
+              number: {{ add 9443 .Values.wso2.apim.portOffset }}
+{{- end -}}

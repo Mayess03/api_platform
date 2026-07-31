@@ -1,0 +1,485 @@
+aws:
+  enabled: false
+  efs:
+    capacity: ""
+    directoryPerms: "0777"
+    fileSystemId: ""
+    accessPoints:
+      carbonDb1: ""
+      solr1: ""
+      carbonDb2: ""
+      solr2: ""
+  region: ""
+  secretsManager:
+    secretProviderClass: "wso2am-cp-secret-provider-class"
+    secretIdentifiers:
+      secretEncryptionKey:
+        secretName: ""
+        secretKey: ""
+      internalKeystorePassword:
+        secretName: ""
+        secretKey: ""
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+
+azure:
+  enabled: false
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+  keyVault:
+    name: ""
+    secretProviderClass: "wso2am-cp-secret-provider-class"
+    secretIdentifiers:
+      secretEncryptionKey: ""
+      internalKeystorePassword: ""
+      internalKeystoreKeyPassword: ""
+    activeDirectory:
+      servicePrincipal:
+        appId: ""
+        clientSecretName: ""
+        credentialsSecretName: ""
+      tenantId: ""
+    resourceManager:
+      subscriptionId: ""
+      resourceGroup: ""
+  persistence:
+    capacity: ""
+    storageClass: ""
+    secretName: ""
+    fileShare: ""
+
+gcp:
+  enabled: false
+  fs:
+    capacity: ""
+    fileshares:
+      carbonDB1:
+        fileStoreName: ""
+        fileShareName: ""
+        ip: ""
+      solr1:
+        fileStoreName: ""
+        fileShareName: ""
+        ip: ""
+      carbonDB2:
+        fileStoreName: ""
+        fileShareName: ""
+        ip: ""
+      solr2:
+        fileStoreName: ""
+        fileShareName: ""
+        ip: ""
+    tier: ""
+    network: ""
+    location: ""
+  secretsManager:
+    projectId: ""
+    secretProviderClass: ""
+    secretEncryptionKey:
+      secretName: ""
+      secretVersion: ""
+    secret:
+      secretName: ""
+      secretVersion: ""
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+
+kubernetes:
+  openshift:
+    enabled: false
+
+  ingressClass: "nginx"
+  ingress:
+    tlsSecret: ""
+    ratelimit:
+      enabled: false
+      zoneName: ""
+      burstLimit: ""
+    controlPlane:
+      enabled: false
+      hostname: "am.wso2.com"
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        nginx.ingress.kubernetes.io/affinity: "cookie"
+        nginx.ingress.kubernetes.io/session-cookie-name: "route"
+        nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+
+  route:
+    tls:
+      termination: "passthrough"
+      insecureEdgeTerminationPolicy: "None"
+      certificate: ""
+      key: ""
+      destinationCACertificate: ""
+    controlPlane:
+      enabled: false
+      hostname: "am.wso2.com"
+      annotations:
+        # key: value
+
+  gatewayAPI:
+    enabled: true
+    gatewayName: "wso2-apim-gateway"
+    defaultConfigMapCreation: false
+    controlPlane:
+      enabled: true
+      hostname: "am.wso2.com"
+      annotations: {}
+      filters: []
+    backendTLSPolicy:
+      enabled: false
+      caCertificateConfigMap: ""
+      hostname: ""
+    backendTrafficPolicy:
+      enabled: true
+      cookie:
+        name: "WSO2_CP_STICKY_SESSION"
+        ttl: "0s"
+
+  securityContext:
+    runAsUser: 10001
+    runAsGroup: 10001
+    seLinux:
+      enabled: false
+      level: ""
+    seccompProfile:
+      type: RuntimeDefault
+      localhostProfile: ""
+
+  enableAppArmor: false
+
+  configMaps:
+    scripts:
+      defaultMode: "0407"
+
+  extraVolumeMounts: []
+  extraVolumes: []
+
+wso2:
+  apim:
+    version: "4.7.0"
+    secureVaultEnabled: false
+    log4j2:
+      loggers: ""
+      appenders: ""
+    startupArgs: ""
+    portOffset: 0
+    ulimits:
+      nproc:
+      nofile:
+    mountStartupScript: false
+    mountFrontendConfig: false
+
+    configurations:
+      encryption:
+        key: "69DF30EDD80598F2158FE7BDA54F0BF66EAAA7B53A5A9DEB40750D91A74BABA6"
+        cipherTransformation: "AES/GCM/NoPadding"
+        internalCryptoProvider: "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"
+
+      existingSecret:
+        secretName: ""
+        adminPasswordKey: ""
+        apimDBPasswordKey: ""
+        sharedDBPasswordKey: ""
+        encryptionKeyKey: ""
+
+      gatewayType: "Regular,APK,AWS,Azure,Kong,Envoy"
+
+      userStore:
+        type: "database_unique_id"
+        properties:
+          key: value
+
+      adminUsername: "admin"
+      adminPassword: "admin"
+
+      adminPasswordExistingSecret:
+        secretName: ""
+        secretKey: ""
+
+      databases:
+        type: "mysql"
+        jdbc:
+          driver: "com.mysql.cj.jdbc.Driver"
+        apim_db:
+          url: "jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/apim_db?useSSL=false&amp;allowPublicKeyRetrieval=true"
+          username: apimadmin
+          password: apimadmin
+          passwordExistingSecret:
+            secretName: ""
+            secretKey: ""
+          poolParameters:
+            defaultAutoCommit: true
+            testOnBorrow: true
+            testWhileIdle: true
+            validationInterval: 30000
+            maxActive: 100
+            maxWait: 60000
+            minIdle: 5
+        shared_db:
+          url: "jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/shared_db?useSSL=false&amp;allowPublicKeyRetrieval=true"
+          username: apimadmin
+          password: apimadmin
+          passwordExistingSecret:
+            secretName: ""
+            secretKey: ""
+          poolParameters:
+            defaultAutoCommit: true
+            testOnBorrow: true
+            testWhileIdle: true
+            validationInterval: 30000
+            maxActive: 100
+            maxWait: 60000
+            minIdle: 5
+
+      ai:
+        enabled: false
+        token: ""
+        key: ""
+        endpoint: ""
+        tokenEndpoint: ""
+        embeddingProvider:
+          type: ""
+          properties:
+            authType: ""
+            apikey: ""
+            azureUmiScope: ""
+            embeddingEndpoint: ""
+            embeddingModel: ""
+        vectorDbProvider:
+          type: ""
+          properties:
+            uri: ""
+            token: ""
+
+      mcp:
+        enabled: true
+
+      security:
+        jksSecretName: "apim-keystore-secret"
+        jksExistingSecret:
+          secretName: ""
+          primaryKeystorePasswordKey: ""
+          primaryKeystoreKeyPasswordKey: ""
+          tlsKeystorePasswordKey: ""
+          tlsKeystoreKeyPasswordKey: ""
+          internalKeystorePasswordKey: ""
+          internalKeystoreKeyPasswordKey: ""
+          truststorePasswordKey: ""
+        keystores:
+          primary:
+            enabled: false
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: ""
+            keyPassword: ""
+          tls:
+            enabled: true
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: "wso2carbon"
+            keyPassword: "wso2carbon"
+          internal:
+            enabled: false
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: ""
+            keyPassword: ""
+        truststore:
+          name: "client-truststore.jks"
+          password: "wso2carbon"
+
+      gateway:
+        environments:
+        - name: "Default"
+          type: "hybrid"
+          gatewayType: "Regular"
+          provider: "wso2"
+          visibility:
+          displayInApiConsole: true
+          description: "This is a hybrid gateway that handles both production and sandbox token traffic."
+          showAsTokenEndpointUrl: true
+          serviceName: "wso2am-gateway-service"
+          servicePort: 9443
+          wsHostname: "websocket.wso2.com"
+          httpHostname: "gw.wso2.com"
+          websubHostname: "websub.wso2.com"
+
+      gatewayNotification:
+        cleanUp:
+          expiryTime: "2m"
+          dataRetentionPeriod: "30d"
+
+      iskm:
+        enabled: false
+        serviceName: ""
+        servicePort: 9443
+
+      km:
+        enabled: false
+        serviceName: "wso2am-km-service"
+        servicePort: 9443
+
+      publisher:
+        enable_api_doc_visibility: false
+        supportedDocumentTypes: ""
+        enablePortalConfigurationOnlyMode: false
+        internalKeyIssuer: ""
+
+      devportal:
+        mode: "HYBRID"
+        enableApplicationSharing:
+        applicationSharingType:
+        applicationSharingImpl:
+        displayMutipleVersions:
+        displayDeprecatedAPIs:
+        enableComments:
+        enableRatings:
+        enableForum:
+        enableAnonymousMode:
+        enableCrossTenantSubscriptions:
+        defaultReservedUsername:
+        loginUsernameCaseInsensitive:
+        enableKeyProvisioning:
+        enableLegacyApiKeys: false
+
+      oauth_config:
+        enableTokenEncryption: false
+        enableTokenHashing: false
+        allowedScopes: ["^device_.*,openid"]
+        oauth2JWKSUrl: "https://apim-acp-wso2am-acp-service:9443/oauth2/jwks"
+        multipleClientSecrets:
+          enable: true
+          secretCount: ""
+        tokenPersistenceOptimization: true
+
+      openTracer:
+        enabled: false
+        name: ""
+        properties:
+          hostname: ""
+          port: ""
+
+      openTelemetry:
+        enabled: false
+        name: ""
+        hostname: ""
+        port: ""
+
+      keyManager:
+        enableLightweightAPIKeyGeneration: true
+        allowSubscriptionValidationDisabling: true
+
+      governance:
+        scheduler:
+          thread_pool_size: ""
+          queue_size: ""
+          task_check_interval_minutes: ""
+          task_cleanup_interval_minutes: ""
+
+      sdk:
+        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
+
+      transactionCounter:
+        enabled: false
+        serverUrl: ""
+
+      organization_based_access_control:
+        enabled: true
+        organization_name_local_claim: "http://wso2.org/claims/organization"
+        organization_id_local_claim: "http://wso2.org/claims/organizationId"
+
+      distributedThrottling:
+        enable: false
+        type: "redis"
+        syncInterval: 1
+        corePoolSize: 5
+        keyvalueStore:
+          host: ""
+          port: 6379
+          user: ""
+          password: ""
+          maxTotal: 20
+          maxIdle: 20
+          minIdle: 4
+          blockWhenExhausted: true
+          testWhileIdle: true
+          minEvictableIdleTimeMillis: 3000
+          timeBetweenEvictionRunsMillis: 1200
+
+      tenantSharing:
+        enabled: false
+        type: ""
+        properties:
+          enableTenantSync: true
+          autoConfigureKeyManager: true
+          username: ""
+          password: ""
+          identityServerBaseUrl: ""
+
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
+
+  deployment:
+    image:
+      imagePullSecrets:
+        enabled: false
+        name: ""
+        username: ""
+        password: ""
+      registry: "docker.io"
+      repository: "mayess03/wso2am-acp-mysql"
+      tag: "1.0"
+      digest: "sha256:a559321912d604827a40a38c0a0a55fd406a9857e3120bb89c8d56b171f31982"
+      imagePullPolicy: Always
+
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "2000m"
+      limits:
+        memory: "3Gi"
+        cpu: "3000m"
+      jvm:
+        memory:
+          xms: "2048m"
+          xmx: "2048m"
+
+    # NOTE: extended from chart defaults (60s/10s/3) to avoid JVM-boot-time
+    # CrashLoopBackOff, matching the fix needed on the earlier all-in-one deployment.
+    startupProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 15
+      failureThreshold: 40
+    livenessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      failureThreshold: 3
+    readinessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      failureThreshold: 3
+
+    lifecycle:
+      preStopHook:
+        sleepSeconds: 10
+
+    replicas: 1
+    minAvailable: "50%"
+
+    nodeSelector:
+
+    pod:
+      annotations: {}
+
+    envs: {}
+
+    highAvailability: true
+
+    persistence:
+      solrIndexing:
+        enabled: false
+        capacity:
+          carbonDatabase: 50M
+          solrIndexedData: 50M
