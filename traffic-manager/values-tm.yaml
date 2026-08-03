@@ -1,0 +1,254 @@
+aws:
+  enabled: false
+  ecr:
+    registry: ""
+  region: ""
+  secretsManager:
+    secretProviderClass: "wso2am-tm-secret-provider-class"
+    secretIdentifiers:
+      secretEncryptionKey:
+        secretName: ""
+        secretKey: ""
+      internalKeystorePassword:
+        secretName: ""
+        secretKey: ""
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+
+azure:
+  enabled: false
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+  acr:
+    registry: ""
+  keyVault:
+    name: ""
+    secretProviderClass: "wso2am-tm-secret-provider-class"
+    secretIdentifiers:
+      secretEncryptionKey: ""
+      internalKeystorePassword: ""
+      internalKeystoreKeyPassword: ""
+    activeDirectory:
+      servicePrincipal:
+        appId: ""
+        clientSecretName: ""
+        credentialsSecretName: ""
+      tenantId: ""
+    resourceManager:
+      subscriptionId: ""
+      resourceGroup: ""
+
+gcp:
+  enabled: false
+  secretsManager:
+    projectId: ""
+    secretProviderClass: ""
+    secretEncryptionKey:
+      secretName: ""
+      secretVersion: ""
+    secret:
+      secretName: ""
+      secretVersion: ""
+  serviceAccountName: ""
+  automountServiceAccountToken: true
+
+kubernetes:
+  openshift:
+    enabled: false
+
+  securityContext:
+    runAsUser: 10001
+    runAsGroup: 10001
+    seLinux:
+      enabled: false
+      level: ""
+    seccompProfile:
+      type: RuntimeDefault
+      localhostProfile: ""
+
+  enableAppArmor: false
+
+  configMaps:
+    scripts:
+      defaultMode: "0407"
+
+  extraVolumeMounts: []
+  extraVolumes: []
+
+wso2:
+  apim:
+    version: "4.7.0"
+    secureVaultEnabled: false
+    log4j2:
+      loggers: ""
+      appenders: ""
+    startupArgs: ""
+    ulimits:
+      nproc:
+      nofile:
+    mountStartupScript: false
+
+    configurations:
+      encryption:
+        key: ""
+        cipherTransformation: "AES/GCM/NoPadding"
+        internalCryptoProvider: "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"
+
+      existingSecret:
+        secretName: ""
+        adminPasswordKey: ""
+        encryptionKeyKey: ""
+
+      userStore:
+        type: "database_unique_id"
+        properties:
+          key: value
+
+      adminUsername: "admin"
+      adminPassword: "admin"
+
+      security:
+        jksSecretName: "apim-keystore-secret"
+        jksExistingSecret:
+          secretName: ""
+          primaryKeystorePasswordKey: ""
+          primaryKeystoreKeyPasswordKey: ""
+          tlsKeystorePasswordKey: ""
+          tlsKeystoreKeyPasswordKey: ""
+          internalKeystorePasswordKey: ""
+          internalKeystoreKeyPasswordKey: ""
+          truststorePasswordKey: ""
+        keystores:
+          primary:
+            enabled: false
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: ""
+            keyPassword: ""
+          tls:
+            enabled: true
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: "wso2carbon"
+            keyPassword: "wso2carbon"
+          internal:
+            enabled: false
+            name: "wso2carbon.jks"
+            alias: "wso2carbon"
+            password: ""
+            keyPassword: ""
+        truststore:
+          name: "client-truststore.jks"
+          password: "wso2carbon"
+
+      km:
+        serviceUrl: "apim-acp-wso2am-acp-service"
+        servicePort: 9443
+
+      iskm:
+        enabled: false
+        serviceName: ""
+
+      eventhub:
+        serviceUrl: "apim-acp-wso2am-acp-service"
+        urls:
+          - "apim-acp-wso2am-acp-1-service"
+          - "apim-acp-wso2am-acp-2-service"
+
+      oauth_config:
+        enableTokenEncryption: false
+        enableTokenHashing: false
+
+      openTracer:
+        enabled: false
+        name: ""
+        properties:
+          hostname: ""
+          port: ""
+
+      openTelemetry:
+        enabled: false
+        name: ""
+        hostname: ""
+        port: ""
+
+      distributedThrottling:
+        enable: false
+        type: "redis"
+        syncInterval: 1
+        corePoolSize: 5
+        keyvalueStore:
+          host: ""
+          port: 6379
+          user: ""
+          password: ""
+          ssl: false
+          maxTotal: 20
+          maxIdle: 20
+          minIdle: 4
+          blockWhenExhausted: true
+          testWhileIdle: true
+          minEvictableIdleTimeMillis: 3000
+          timeBetweenEvictionRunsMillis: 1200
+
+      extraConfigs:
+
+  deployment:
+    image:
+      imagePullSecrets:
+        enabled: false
+        name: ""
+        username: ""
+        password: ""
+      registry: "docker.io"
+      repository: "wso2/wso2am-tm"
+      tag: "4.7.0"
+      digest: ""
+      imagePullPolicy: Always
+
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "2000m"
+      limits:
+        memory: "3Gi"
+        cpu: "3000m"
+      jvm:
+        memory:
+          xms: "2048m"
+          xmx: "2048m"
+
+    startupProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 15
+      failureThreshold: 40
+    livenessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      failureThreshold: 3
+    readinessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      failureThreshold: 3
+
+    lifecycle:
+      preStopHook:
+        sleepSeconds: 10
+
+    cpuUtilizationPercentage: 75
+    memoryUtilizationPercentage: 75
+    minAvailable: "50%"
+
+    nodeSelector:
+
+    pod:
+      annotations: {}
+
+    envs: {}
+
+    strategy:
+      rollingUpdate:
+        maxSurge: 2
+        maxUnavailable: 0
+
+    highAvailability: false

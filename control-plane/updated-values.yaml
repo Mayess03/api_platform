@@ -466,7 +466,7 @@ wso2:
         sleepSeconds: 10
 
     replicas: 1
-    minAvailable: "50%"
+    minAvailable: "100%"
 
     nodeSelector:
 
@@ -475,7 +475,7 @@ wso2:
 
     envs: {}
 
-    highAvailability: true
+    highAvailability: false
 
     persistence:
       solrIndexing:
