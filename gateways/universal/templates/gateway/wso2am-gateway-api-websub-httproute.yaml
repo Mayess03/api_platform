@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,33 +16,32 @@
 #
 # --------------------------------------------------------------------------------------
 
-
-{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.controlPlane.enabled }}
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.websub.enabled }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ template "apim-helm-cp.fullname" . }}-httproute
+  name: {{ template "apim-helm-gw.fullname" . }}-websub-httproute
   namespace: {{ .Release.Namespace }}
-{{- if .Values.kubernetes.gatewayAPI.controlPlane.annotations }}
+{{- if .Values.kubernetes.gatewayAPI.websub.annotations }}
   annotations:
-{{ toYaml .Values.kubernetes.gatewayAPI.controlPlane.annotations | indent 4 }}
+{{ toYaml .Values.kubernetes.gatewayAPI.websub.annotations | indent 4 }}
 {{- end }}
 spec:
   parentRefs:
   - name: {{ .Values.kubernetes.gatewayAPI.gatewayName }}
-    sectionName: control-plane-https
+    sectionName: websub-https
   hostnames:
-  - {{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}
+  - {{ .Values.kubernetes.gatewayAPI.websub.hostname }}
   rules:
   - matches:
     - path:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: {{ template "apim-helm-cp.fullname" . }}-service
-      port: {{ add 9763 (.Values.wso2.apim.portOffset | default 0) }}
-    {{- if .Values.kubernetes.gatewayAPI.controlPlane.filters }}
+    - name: {{ template "apim-helm-gw.fullname" . }}-service
+      port: {{ add 8021 (.Values.wso2.apim.portOffset | default 0) }}
+    {{- if .Values.kubernetes.gatewayAPI.websub.filters }}
     filters:
-{{ toYaml .Values.kubernetes.gatewayAPI.controlPlane.filters | indent 4 }}
+{{ toYaml .Values.kubernetes.gatewayAPI.websub.filters | indent 4 }}
     {{- end }}
 {{- end }}
