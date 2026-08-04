@@ -1,0 +1,12 @@
+spec:
+  rules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: apim-gw-wso2am-universal-gw-service
+      port: 8280
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
