@@ -1,0 +1,19 @@
+# tm-service-patch.yaml
+spec:
+  ports:
+  - name: servlet-http
+    port: 9763
+    protocol: TCP
+    targetPort: 9763
+  - name: servlet-https
+    port: 9443
+    protocol: TCP
+    targetPort: 9443
+  - name: databridge-ssl
+    port: 9711
+    protocol: TCP
+    targetPort: 9711
+  - name: databridge-tcp
+    port: 9611
+    protocol: TCP
+    targetPort: 9611

@@ -473,7 +473,7 @@ wso2:
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "apim-tm-wso2am-tm-service"
+          - "apim-acp-wso2am-acp-1-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling
@@ -498,7 +498,7 @@ wso2:
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-service"
+          - "apim-acp-wso2am-acp-1-service"
         
       # APIM cache related configurations
       cache:
