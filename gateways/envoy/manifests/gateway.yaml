@@ -1,0 +1,23 @@
+﻿---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-federated-gateway
+  namespace: apim-gw-envoy
+spec:
+  gatewayClassName: envoy-gateway
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 9080
+    hostname: "envoy.wso2.com"
+  - name: https
+    protocol: HTTPS
+    port: 9443
+    hostname: "envoy.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: wso2-wildcard-tls 
+        namespace: apim-cp

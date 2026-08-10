@@ -437,10 +437,10 @@ wso2:
     resources:
       requests:
         memory: "2Gi"
-        cpu: "2000m"
+        cpu: "500m"
       limits:
         memory: "3Gi"
-        cpu: "3000m"
+        cpu: "1500m"
       jvm:
         memory:
           xms: "2048m"
