@@ -467,13 +467,13 @@ wso2:
       throttling:
         # -- Traffic manager loadbalancer service url for throttling.
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "apim-tm-wso2am-tm-service"
         portOffset: 0
         # -- Port of the service URL
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "apim-acp-wso2am-acp-1-service"
+          - "apim-tm-wso2am-tm-1-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling

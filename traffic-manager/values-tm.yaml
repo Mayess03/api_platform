@@ -90,7 +90,7 @@ wso2:
 
     configurations:
       encryption:
-        key: ""
+        key: "69DF30EDD80598F2158FE7BDA54F0BF66EAAA7B53A5A9DEB40750D91A74BABA6"
         cipherTransformation: "AES/GCM/NoPadding"
         internalCryptoProvider: "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"
 
@@ -153,7 +153,6 @@ wso2:
         serviceUrl: "apim-acp-wso2am-acp-service"
         urls:
           - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
 
       oauth_config:
         enableTokenEncryption: false
@@ -208,15 +207,15 @@ wso2:
 
     resources:
       requests:
-        memory: "2Gi"
-        cpu: "2000m"
+        memory: "1Gi"
+        cpu: "500m"
       limits:
-        memory: "3Gi"
-        cpu: "3000m"
+        memory: "2Gi"
+        cpu: "1500m"
       jvm:
         memory:
-          xms: "2048m"
-          xmx: "2048m"
+          xms: "512m"
+          xmx: "1024m"
 
     startupProbe:
       initialDelaySeconds: 60

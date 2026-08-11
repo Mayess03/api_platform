@@ -204,7 +204,7 @@ wso2:
         apim_db:
           url: "jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/apim_db?useSSL=false&amp;allowPublicKeyRetrieval=true"
           username: apimadmin
-          password: apimadmin
+          password: root
           passwordExistingSecret:
             secretName: ""
             secretKey: ""
@@ -219,7 +219,7 @@ wso2:
         shared_db:
           url: "jdbc:mysql://mysql.apim-cp.svc.cluster.local:3306/shared_db?useSSL=false&amp;allowPublicKeyRetrieval=true"
           username: apimadmin
-          password: apimadmin
+          password: root
           passwordExistingSecret:
             secretName: ""
             secretKey: ""
@@ -430,8 +430,8 @@ wso2:
         password: ""
       registry: "docker.io"
       repository: "mayess03/wso2am-acp-mysql"
-      tag: "1.0"
-      digest: "sha256:a559321912d604827a40a38c0a0a55fd406a9857e3120bb89c8d56b171f31982"
+      tag: "4.7.0"
+      digest: "sha256:792ff257c9004a476c41769de90cf77f8925ee95d655c45fd03bb60aff965475"
       imagePullPolicy: Always
 
     resources:
@@ -449,17 +449,17 @@ wso2:
     # NOTE: extended from chart defaults (60s/10s/3) to avoid JVM-boot-time
     # CrashLoopBackOff, matching the fix needed on the earlier all-in-one deployment.
     startupProbe:
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       periodSeconds: 15
       failureThreshold: 40
     livenessProbe:
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       periodSeconds: 10
-      failureThreshold: 3
+      failureThreshold: 6
     readinessProbe:
-      initialDelaySeconds: 60
-      periodSeconds: 10
-      failureThreshold: 3
+      initialDelaySeconds: 120
+      periodSeconds: 20
+      failureThreshold: 6
 
     lifecycle:
       preStopHook:
