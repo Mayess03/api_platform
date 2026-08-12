@@ -2,7 +2,6 @@
 secrets/
 **/values.yaml
 **/install-values.yaml
-**/*-agent-values.yaml
 *.key
 *.crt
 *.pem

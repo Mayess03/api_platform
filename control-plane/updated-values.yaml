@@ -437,14 +437,14 @@ wso2:
     resources:
       requests:
         memory: "2Gi"
-        cpu: "500m"
+        cpu: "300m"
       limits:
         memory: "3Gi"
-        cpu: "1500m"
+        cpu: "1000m"
       jvm:
         memory:
-          xms: "2048m"
-          xmx: "2048m"
+          xms: "1536m"
+          xmx: "1536m"
 
     # NOTE: extended from chart defaults (60s/10s/3) to avoid JVM-boot-time
     # CrashLoopBackOff, matching the fix needed on the earlier all-in-one deployment.

@@ -1,16 +1,1 @@
-deployment:
-  envoyGateway:
-    resources:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 10m      # Very minimal CPU request
-        memory: 64Mi   # Minimal memory request
-  
-  replicas: 1
-
-config:
-  envoyGateway:
-    gateway:
-      controllerName: gateway.envoyproxy.io/gatewayclass-controller
+# envoy gateway values

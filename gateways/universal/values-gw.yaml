@@ -612,24 +612,24 @@ wso2:
         # -- Memory request for API Manager
         memory: "1Gi"
         # -- CPU request for API Manager
-        cpu: "1000m"
+        cpu: "500m"
       limits:
         # -- Memory limit for API Manager
         memory: "2Gi"
         # -- CPU limit for API Manager
-        cpu: "2000m"
+        cpu: "1000m"
       jvm:
         memory:
           # -- JVM heap memory Xms
-          xms: "1024m"
+          xms: "768m"
           # -- JVM heap memory Xmx
-          xmx: "1024m"
+          xmx: "768m"
 
     # Kubernetes Probes
     # Indicates whether the container starting
     startupProbe:
       # -- Number of seconds after the container has started before startup probes are initiated
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       # -- How often (in seconds) to perform the probe
       periodSeconds: 15
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
@@ -637,19 +637,19 @@ wso2:
     # Indicates whether the container is running
     livenessProbe:
       # -- Number of seconds after the container has started before liveness probes are initiated
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3
+      failureThreshold: 6
     # Indicates whether the container is ready to service requests
     readinessProbe:
       # -- Number of seconds after the container has started before readiness probes are initiated
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3
+      failureThreshold: 6
 
     lifecycle:
       preStopHook:

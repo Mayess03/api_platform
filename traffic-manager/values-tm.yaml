@@ -208,27 +208,27 @@ wso2:
     resources:
       requests:
         memory: "1Gi"
-        cpu: "500m"
+        cpu: "250m"
       limits:
         memory: "2Gi"
-        cpu: "1500m"
+        cpu: "750m"
       jvm:
         memory:
           xms: "512m"
-          xmx: "1024m"
+          xmx: "768m"
 
     startupProbe:
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       periodSeconds: 15
       failureThreshold: 40
     livenessProbe:
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       periodSeconds: 10
-      failureThreshold: 3
+      failureThreshold: 6
     readinessProbe:
-      initialDelaySeconds: 60
+      initialDelaySeconds: 120
       periodSeconds: 10
-      failureThreshold: 3
+      failureThreshold: 6
 
     lifecycle:
       preStopHook:
