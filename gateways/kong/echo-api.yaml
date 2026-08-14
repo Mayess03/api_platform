@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-backend
+  namespace: kong
+spec:
+  selector:
+    app: echo-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-backend
+  namespace: kong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-backend
+  template:
+    metadata:
+      labels:
+        app: echo-backend
+    spec:
+      containers:
+        - name: echo
+          image: ealen/echo-server:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: echo-api
+  namespace: kong
+spec:
+  parentRefs:
+    - name: kong
+  hostnames:
+    - "kong.wso2.com"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /echo
+      backendRefs:
+        - name: echo-backend
+          port: 80

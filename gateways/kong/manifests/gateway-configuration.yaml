@@ -1,0 +1,13 @@
+apiVersion: gateway-operator.konghq.com/v2beta1
+kind: GatewayConfiguration
+metadata:
+  name: kong-configuration
+  namespace: kong
+spec:
+  dataPlaneOptions:
+    deployment:
+      podTemplateSpec:
+        spec:
+          containers:
+            - name: proxy
+              image: kong/kong-gateway:3.9
