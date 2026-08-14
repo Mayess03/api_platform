@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kong-wso2-com-tls
+  namespace: kong
+spec:
+  secretName: kong-wso2-com-tls
+  issuerRef:
+    name: wso2-local-ca
+    kind: ClusterIssuer
+  dnsNames:
+    - kong.wso2.com

@@ -9,7 +9,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 8080
+      targetPort: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -30,13 +30,15 @@ spec:
         - name: echo
           image: ealen/echo-server:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: echo-api
   namespace: kong
+  annotations:
+    konghq.com/plugins: echo-cors
 spec:
   parentRefs:
     - name: kong

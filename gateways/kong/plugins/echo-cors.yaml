@@ -1,0 +1,24 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: echo-cors
+  namespace: kong
+plugin: cors
+config:
+  origins:
+    - "https://kong.wso2.com"
+  methods:
+    - GET
+    - OPTIONS
+    - HEAD
+  headers:
+    - Accept
+    - Authorization
+    - Content-Type
+    - Origin
+    - X-Requested-With
+  exposed_headers:
+    - X-Kong-Request-Id
+  credentials: true
+  max_age: 3600
+  preflight_continue: false
