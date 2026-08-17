@@ -43,8 +43,8 @@ dataPlane:
   enabled: true
   namespace: kong
   gatewayClassName: kong
-  GatewayHTTPSPort: 443
-  GatewayHTTPPort: 80
+  GatewayHTTPSPort: 8443
+  GatewayHTTPPort: 8080
 metrics:
   enabled: false
 agent:

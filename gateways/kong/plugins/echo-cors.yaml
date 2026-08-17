@@ -6,7 +6,8 @@ metadata:
 plugin: cors
 config:
   origins:
-    - "https://kong.wso2.com"
+    - "https://am.wso2.com"
+    - "https://kong.wso2.com:8443"
   methods:
     - GET
     - OPTIONS
