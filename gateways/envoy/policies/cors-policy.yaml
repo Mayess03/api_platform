@@ -1,0 +1,28 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: echo-cors
+  namespace: envoy
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: echo-api
+  cors:
+    allowOrigins:
+      - "https://am.wso2.com"
+      - "https://envoy.wso2.com:9443"
+    allowMethods:
+      - GET
+      - OPTIONS
+      - HEAD
+    allowHeaders:
+      - Accept
+      - Authorization
+      - Content-Type
+      - Origin
+      - X-Requested-With
+    exposeHeaders:
+      - X-Envoy-Request-Id
+    allowCredentials: true
+    maxAge: 3600s

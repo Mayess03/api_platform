@@ -18,7 +18,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 # This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
 kind: ClusterRoleBinding
 metadata:
-  name: agent-cluster-role-binding
+  name: {{ .Values.serviceAccount.clusterRoleBindingName | default "agent-cluster-role-binding" }}
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole

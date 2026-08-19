@@ -37,7 +37,7 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/log-conf.yaml") . | sha256sum }}
     spec:
-      serviceAccountName: wso2agent-platform
+      serviceAccountName: {{ .Values.serviceAccount.serviceAccountName | default "wso2agent-platform" }}
       containers:
         - name: {{ template "common-agent-helm.resource.prefix" . }}-common-deployment
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

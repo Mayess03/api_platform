@@ -1,0 +1,28 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-gateway
+  namespace: envoy
+spec:
+  gatewayClassName: envoy-gateway
+
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 9080
+      hostname: envoy.wso2.com
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - name: https
+      protocol: HTTPS
+      port: 9443
+      hostname: envoy.wso2.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: envoy-gateway-tls-secret
+      allowedRoutes:
+        namespaces:
+          from: Same

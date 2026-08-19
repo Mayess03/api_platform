@@ -1,1 +1,66 @@
-﻿# envoy agent values 
+﻿wso2:
+  subscription:
+    imagePullSecrets: ""
+
+replicaCount: 1
+
+image:
+  repository: wso2/apim-k8s-common-gw-connector
+  tag: 1.0.0-rc
+  pullPolicy: Always
+
+service:
+  name: apim-envoy-agent-service
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
+
+controlPlane:
+  enabled: true
+  serviceURL: https://apim-acp-wso2am-acp-service.apim-cp.svc.cluster.local:9443/
+  username: admin
+  password: admin
+  environmentLabels: EG
+  skipSSLVerification: true
+  eventListeningEndpoints: amqp://admin:admin@apim-acp-wso2am-acp-1-service.apim-cp.svc.cluster.local:5672?retries='10'&connectdelay='30'
+
+dataPlane:
+  enabled: true
+  namespace: envoy
+  gatewayClassName: envoy-gateway
+  GatewayHTTPSPort: 9443
+  GatewayHTTPPort: 9080
+
+metrics:
+  enabled: false
+
+agent:
+  gateway: eg
+
+certmanager:
+  enabled: true
+
+serviceAccount:
+  enableServiceAccountCreation: true
+  enableClusterRoleCreation: true
+  serviceAccountName: wso2agent-envoy
+  roleName: wso2agent-envoy-role
+  clusterRoleBindingName: wso2agent-envoy-cluster-role-binding
+
+logging:
+  level: "INFO"
+  format: "TEXT"
+
+certificates:
+  issuerCertName: apim-envoy-agent-issuer-cert
+  serverCertName: apim-envoy-agent-server-cert
+  serverCertSecretName: envoy-agent-server-cert
+
+issuers:
+  selfsignedIssuerName: envoy-agent-selfsigned-issuer
+  selfsignedIssuerSecretName: envoy-agent-root-certificate
