@@ -1,0 +1,14 @@
+service:
+  type: LoadBalancer
+  http:
+    enabled: true
+    port: 8280
+  https:
+    enabled: true
+    port: 8243
+
+registration:
+  content: null
+
+gateway:
+  mode: connected
