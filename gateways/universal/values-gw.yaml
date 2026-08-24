@@ -276,7 +276,7 @@ wso2:
     # -- Moesif base URL
     moesif_base_url: "https://api.moesif.net"
     # -- Moesif send header
-    send_headers: false
+    send_headers: true
 
   apim:
     # -- APIM version

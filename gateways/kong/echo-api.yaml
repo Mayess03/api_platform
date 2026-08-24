@@ -38,7 +38,7 @@ metadata:
   name: echo-api
   namespace: kong
   annotations:
-    konghq.com/plugins: echo-cors,moesif
+    konghq.com/plugins: echo-cors,moesif,gateway-source-header
 spec:
   parentRefs:
     - name: kong

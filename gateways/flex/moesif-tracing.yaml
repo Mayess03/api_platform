@@ -19,3 +19,8 @@ spec:
       client: 100
       random: 100
       overall: 100
+
+    labels:
+      - name: gatewaySource
+        type: literal
+        defaultValue: mulesoft-gateway
