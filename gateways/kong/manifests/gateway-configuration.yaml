@@ -1,8 +1,10 @@
 apiVersion: gateway-operator.konghq.com/v2beta1
 kind: GatewayConfiguration
+
 metadata:
   name: kong-configuration
   namespace: kong
+
 spec:
   dataPlaneOptions:
     deployment:
@@ -10,4 +12,7 @@ spec:
         spec:
           containers:
             - name: proxy
-              image: kong/kong-gateway:3.9
+              image: mayess03/kong-gateway-moesif:3.9
+              env:
+                - name: KONG_PLUGINS
+                  value: "bundled,moesif"
