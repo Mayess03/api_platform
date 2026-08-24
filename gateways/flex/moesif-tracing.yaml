@@ -1,0 +1,21 @@
+apiVersion: gateway.mulesoft.com/v1beta1
+kind: Configuration
+metadata:
+  name: moesif-tracing
+  namespace: gateway
+spec:
+  tracing:
+    provider:
+      type: opentelemetry
+      properties:
+        address: https://api.moesif.net/v1/traces
+        tracesUri: https://api.moesif.net/v1/traces
+        serviceType: http
+        serviceName: flex-gateway
+        timeout: 10s
+        httpHeaders:
+          X-Moesif-Application-Id: 'eyJhcHAiOiI2MTc6Mjg0NCIsInZlciI6IjIuMSIsIm9yZyI6IjI0MDoxODYzIiwiaWF0IjoxNzg1NTQyNDAwfQ.u0yXXP0B1wNwCWkJePreApx6zu4ls71u6mdOxmB53Is'
+    sampling:
+      client: 100
+      random: 100
+      overall: 100
