@@ -495,3 +495,8 @@ identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.pro
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
 {{- end }}
+
+
+[apim.analytics]
+enable = true
+type = "elk"

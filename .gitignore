@@ -1,10 +1,8 @@
 # Real secrets — never commit these
 secrets/
-**/values.yaml
 **/install-values.yaml
 *.key
 *.crt
-*.pem
 cert.b64
 
 # Local helm/k8s artifacts

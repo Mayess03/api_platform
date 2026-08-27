@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+  namespace: elk
+data:
+  logstash.conf: |
+    input {
+      beats {
+        port => 5044
+      }
+    }
+
+    filter {
+      grok {
+        match => {
+          "message" => "%{GREEDYDATA:UNWANTED}\ apimMetrics:%{GREEDYDATA:apimMetrics}\, %{GREEDYDATA:UNWANTED2} \:%{GREEDYDATA:properties}"
+        }
+      }
+
+      json {
+        source => "properties"
+      }
+    }
+
+    output {
+      if [apimMetrics] == " apim:response" {
+        elasticsearch {
+          hosts => ["http://elasticsearch:9200"]
+          index => "apim_event_response"
+        }
+      } else if [apimMetrics] == " apim:faulty" {
+        elasticsearch {
+          hosts => ["http://elasticsearch:9200"]
+          index => "apim_event_faulty"
+        }
+      }
+    }
