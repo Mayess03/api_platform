@@ -43,12 +43,17 @@ data:
           hints.enabled: false
 
           templates:
+
+            # ============================================================
+            # WSO2 Universal Gateway
+            # ============================================================
             - condition:
                 and:
                   - equals:
                       kubernetes.namespace: "apim-cp"
                   - equals:
                       kubernetes.labels.deployment: "apim-gw-wso2am-universal-gw"
+
               config:
                 - type: container
                   paths:
@@ -61,11 +66,47 @@ data:
                           - logs_path:
                               logs_path: "/var/log/containers/"
 
+                    - add_fields:
+                        target: "gateway"
+                        fields:
+                          type: "wso2-universal"
+                          name: "wso2-universal"
+
+            # ============================================================
+            # Kong Gateway
+            # ============================================================
+            - condition:
+                and:
+                  - equals:
+                      kubernetes.namespace: "kong"
+                  - regexp:
+                      kubernetes.pod.name: "dataplane-kong-.*"
+
+              config:
+                - type: container
+                  paths:
+                    - /var/log/containers/*-${data.kubernetes.container.id}.log
+
+                  processors:
+                    - add_kubernetes_metadata:
+                        host: ${NODE_NAME}
+                        matchers:
+                          - logs_path:
+                              logs_path: "/var/log/containers/"
+
+                    - add_fields:
+                        target: "gateway"
+                        fields:
+                          type: "kong"
+                          name: "kong"
+
     output.logstash:
       hosts:
         - "logstash.elk.svc.cluster.local:5044"
 
-    logging.level: info
+    logging.level: debug
+
+
 ---
 apiVersion: apps/v1
 kind: DaemonSet
